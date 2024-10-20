@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/Auth/AuthContext';
+
 
 const Navbar = () => {
+
+  const { isAuthenticated, logout, login } = useAuth();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div className="container">
@@ -10,9 +15,21 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/">Home</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/private">Private Page</Link>
-            </li>
+            {isAuthenticated ? (
+            <>
+              <li>
+                <Link to="/dashboard">Dashboard</Link>
+              </li>
+              <li>
+                <button onClick={logout}>Logout</button>
+              </li>
+            </>
+            ) : (
+              <li>
+                <button onClick={login}>Login</button>
+              </li>
+            )}
+
           </ul>
         </div>
       </div>
