@@ -1,9 +1,14 @@
 export const Dashboard = () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Private page</p>
-      
+    <div className="container">
+        <div className="row">
+          <div className="col-1 menudiv">
+            1
+          </div>
+          <div className="col">
+            2
+          </div>
+      </div>
     </div>
   );
 };

@@ -6,13 +6,14 @@ import {
  } from 'react-router-dom';
 import App from './App';
 import Home from './routes/Home';
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import { PrivateRoute } from './components/PrivateRoute';
 import { Dashboard } from './routes/Dashboard';
-// import { Login } from './routes/Login';
 import { AuthProvider } from './contexts/Auth/AuthContext';
-import Login from './routes/Login';
+import Login from './components/Login';
+import Register from './components/Register';
+import { ProtectedRoute } from './routes/ProtectedRoute';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import './index.css';
 
 const router = createBrowserRouter([
   {
@@ -28,13 +29,17 @@ const router = createBrowserRouter([
         element: <Login />
       },
       {
+        path: '/register',
+        element: <Register />,
+      },
+      {
         path: '/dashboard',
         element: (
-          <PrivateRoute>
+          <ProtectedRoute>
             <Dashboard />
-          </PrivateRoute>
-        )
-      }
+          </ProtectedRoute>
+        ),
+      },
     ]
   }
 ]);
