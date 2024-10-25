@@ -1,10 +1,16 @@
-import { useState, ReactNode, createContext, useContext, useEffect } from 'react';
-import kc from '../../../keycloak';
+import { useState, ReactNode, createContext, useContext } from 'react';
+import { Login } from '../../types/Login';
+import { RegisterUser } from '../../types/RegisterUser';
+import axios, { AxiosResponse } from 'axios';
+
+const API_URL = 'https://localhost:7114';
 
 interface AuthContextType {
     isAuthenticated: boolean;
-    login: () => Promise<void>;
+    login: (loginData: Login) => Promise<void>;
     logout: () => Promise<void>;
+    register: (registerUser: RegisterUser) => Promise<AxiosResponse<any, any>>;
+    getToken: () => string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -13,33 +19,44 @@ export const AuthProvider = ({ children } : { children: ReactNode }) => {
     
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const login = async () => {
+    const login = async (loginData: Login) => {
 
-        kc.init({ 
-            onLoad: 'check-sso', //login-required
-            checkLoginIframe: true,
-            pkceMethod: 'S256' 
-        }).then(authenticated => {
-            setIsAuthenticated(authenticated);
-        }).catch(() => {
-            setIsAuthenticated(false);
-        });
+        try {
+            const response = await axios.post(`${API_URL}/HubbleAuth/login`, loginData);
 
-        await kc.login();
+            if (response.data.token) {
+                setIsAuthenticated(true);
+                localStorage.setItem('token', response.data.token);
+                console.log(response.data.token);
+            }
+
+            return response.data;
+
+        }catch(error){
+            console.log(error);
+        }
+        
     }
     
     const logout = async () => {
-        await kc.logout(
-            // {
-            //     //URL base da aplicação react;
-            //     //Mudar para .env
-            //     redirectUri: 'http://localhost:5173/home'
-            // }
-        );
+
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+
     }
 
+    const register = async (registerUser: RegisterUser) => {
+
+        const response = await axios.post(`${API_URL}/HubbleAuth/register`, registerUser);
+        console.log(response);
+        return response;
+        
+    }
+
+    const getToken = () => localStorage.getItem('token');
+
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, register, getToken }}>
             {children}
         </AuthContext.Provider>
     );

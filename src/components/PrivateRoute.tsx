@@ -6,5 +6,5 @@ export const PrivateRoute = ({ children } : { children: React.ReactNode }) => {
 
   const { isAuthenticated } = useAuth();
 
-  return isAuthenticated ? <>{children}</> : <Navigate to="/home" />;
+  return isAuthenticated ? <>{children}</> : <Navigate to="/" />;
 };

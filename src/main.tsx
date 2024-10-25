@@ -10,8 +10,9 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { PrivateRoute } from './components/PrivateRoute';
 import { Dashboard } from './routes/Dashboard';
-import { Login } from './routes/Login';
+// import { Login } from './routes/Login';
 import { AuthProvider } from './contexts/Auth/AuthContext';
+import Login from './routes/Login';
 
 const router = createBrowserRouter([
   {

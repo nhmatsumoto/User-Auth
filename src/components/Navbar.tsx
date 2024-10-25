@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div className="container">
-        <Link className="navbar-brand" to="/">Gerenciador de usuários</Link>
+        <Link className="navbar-brand" to="/">Hubble</Link>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
@@ -18,15 +18,15 @@ const Navbar = () => {
             {isAuthenticated ? (
             <>
               <li>
-                <Link to="/dashboard">Dashboard</Link>
+                <Link className="nav-link" to="/dashboard">Dashboard</Link>
               </li>
               <li>
-                <button onClick={logout}>Logout</button>
+                <a className="nav-link" onClick={logout}>Logout</a>
               </li>
             </>
             ) : (
               <li>
-                <button onClick={login}>Login</button>
+                <a className="nav-link" onClick={async () => await login({username:'admin@hubble.com', password:'Admin@123'})}>Login</a>
               </li>
             )}
 
